@@ -1,3 +1,5 @@
+To compile and run the serial version of the miniapp
+
 ```bash
 # choose your preferred version (C++ in this example)
 cd cxx
@@ -13,10 +15,8 @@ make
 srun ./main
 
 # now run on a 128x128 grid to t=0.01 via 100 time steps
-srun ./main 64 64 1000 0.01
+srun ./main 128 128 100 0.01
 ```
-
-
 
 Benchmark results on Piz Daint `srun main 128 128 100 0.01`
 
