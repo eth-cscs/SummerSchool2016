@@ -6,5 +6,5 @@
 #SBATCH --reservation=summerschool
 #SBATCH --time=00:02:00
 
-aprun ./main 256 256 200 0.01 yes
+srun ./main 256 256 200 0.01 yes
 
