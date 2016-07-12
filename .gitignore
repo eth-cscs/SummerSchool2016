@@ -16,10 +16,12 @@ tmp
 main
 *.cuda
 *.omp
+*.mpi
 
 # visualization output files
 *.bin
 *.bov
+*.png
 
 # compilation files
 *.o
