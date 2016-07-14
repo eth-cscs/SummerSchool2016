@@ -7,7 +7,7 @@
 
 // TODO CUDA kernel implementing axpy
 //      y = y + alpha*x
-//void axpy(int n, double alpha, const double *x, double* y)
+//void axpy(int n, double alpha, const double* x, double* y)
 
 template <typename F>
 int calculate_threads_per_block(F kernel, int  n) {
@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
     auto time_H2D = get_time() - start;
 
     // TODO calculate grid dimensions
+    // IGNORE for the first kernel writing exercise
     // don't try to use cudaOccupancyMaxPotentialBlockSize the first time
-    // ignore for the first kernel writing exercise
 
     // the cudaThreadSynchronize() functions synchronize the host and device
     // so that the timings are accurate
