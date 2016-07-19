@@ -25,7 +25,6 @@ void setInitialConditions(double *s, int iDim, int jDim);
 //////////////////////////////////////////////////////////
 // TODO : add openmp directives to parallelize
 void laplace_base(double *sIn, double *sOut, double D, int iDim, int jDim){
-#pragma omp parallel for
     for(int j=1; j<jDim-1; j++){
         double *sP   = sIn  + INDEX(0,j,iDim);
         double *sN   = sIn  + INDEX(0,j+1,iDim);
@@ -40,13 +39,11 @@ void laplace_base(double *sIn, double *sOut, double D, int iDim, int jDim){
 // TODO : add openmp directives to parallelize
 // TODO : make it vectorize
 void laplace_vectorize(double *sIn, double *sOut, double D, int iDim, int jDim){
-#pragma omp parallel for
     for(int j=1; j<jDim-1; j++){
         double *sP   = sIn  + INDEX(0,j,iDim);
         double *sN   = sIn  + INDEX(0,j+1,iDim);
         double *sS   = sIn  + INDEX(0,j-1,iDim);
         double *s    = sOut + INDEX(0,j,iDim);
-        #pragma ivdep
         for(int i=1; i<iDim-1; i++){
             s[i] =  sP[i] + D*(-4.*sP[i] + sP[i-1] + sP[i+1] + sN[i] + sS[i]);
         }
