@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 {
     int my_rank;
     float buffer[SIZE];
-    MPI_Status status;
 
     MPI_Init(&argc, &argv);
 

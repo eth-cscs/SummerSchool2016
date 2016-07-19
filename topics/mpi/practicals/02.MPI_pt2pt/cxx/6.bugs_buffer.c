@@ -7,7 +7,7 @@
  * CSCS take no responsibility for the use of the enclosed      *
  * teaching material.                                           *
  *                                                              *
- * Purpose: There is 2 bugs related to buffer                   *
+ * Purpose: There is 4 bugs related to buffer                   *
  *                                                              *
  * Contents: C-Source                                           *
  *                                                              *
@@ -18,6 +18,7 @@
  * If 16 ranks are used the program fails (easy to find)
  * one bug is hidden and will not make the program fails (easy to find)
  * If compiled with Intel compiler, the program fails (hard to find)
+ * There is one silent bug that do not cause an error (easy to find)
  * DO NOT TRY TO FIX THE BUGS - YOU JUST HAVE TO IDENTIFY THEM
  */
 
@@ -32,11 +33,10 @@
 #include <mpi.h>
 #include <vector>
 
-#define MAX_SIZE_STRING 58
+#define MAX_SIZE_STRING 64
 #define MAX_SIZE_COMPUTE (1<<20)
 
-void compute_and_send(size_t size, float root, int k, MPI_Request* req)
-{
+void compute_and_send(size_t size, float root, int k, MPI_Request* req) {
     std::vector<float> data(size);
     int j;
 
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         /* Non-blocking send buffer */
         for( k = 1; k < np; k++ ) {
             root[k-1] = sqrt(k);
-            sprintf(buffer, "Hello! This rank %d has the data computed with root %.4f.", k, root[k-1]);
+            sprintf(buffer, "Hello world! This rank %d has the data computed with root %.4f.", k, root[k-1]);
             MPI_Isend(buffer, strlen(buffer), MPI_CHAR, k, 1, MPI_COMM_WORLD, &req[k-1]);
 
             size[k-1] = (unsigned long)(MAX_SIZE_COMPUTE*root[k-1]);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         }
 
         for( k = 1; k < np; k++ ) {
-            compute_and_send(size[k-1], root[k-1], k, &req[k-1+2*(np-1)]);
+           compute_and_send(size[k-1], root[k-1], k, &req[k-1+2*(np-1)]);
         }
 
         MPI_Waitall(3*(np-1), req, MPI_STATUS_IGNORE);

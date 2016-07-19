@@ -42,7 +42,7 @@ PROGRAM sum_ring
   ! below write ring addition code.
   ! do not use IF (RANK.EQ.0) THEN .. ELSE ..
   ! every rank sends initialy its rank number to a neighbor, and then sends what
-  ! it receives from that neighbor, this is done n times with n = number of process
+  ! it receives from that neighbor, this is done n times with n = number of processes
   ! all ranks obtain the sum
 
   WRITE(*,*) "PE", my_rank, ": Sum =", sum

@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 
     int rank, size, number;
     char string_comm[1024];
-    MPI_Status stat;
 
     MPI_Init(&argc, &argv);
 
@@ -37,7 +36,8 @@ int main(int argc, char *argv[])
         exit(1);
     }
     if (rank == 0) {
-        printf("enter number \n");
+        printf("enter a number:\n");
+        fflush(stdout);
         scanf("%d",&number);
     }
     /* send the contents of number from rank 0 to rank 1 using MPI_Send --- MPI_Recv */
