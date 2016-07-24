@@ -1,0 +1,51 @@
+#Use this makefile if you want to use your own 
+# build of PETSC
+
+EXNAME = main
+
+# build the main execubable by default
+ALL : ${EXNAME}
+
+# We use PETSc's included variables and rules,
+#  so you must have PETSC_DIR and PETSC_ARCH
+#  defined to refere to a working PETSc build
+include ${PETSC_DIR}/lib/petsc/conf/variables
+include ${PETSC_DIR}/lib/petsc/conf/rules
+
+OBJ = main.o system.o dump.o
+
+${EXNAME}: $(OBJ) chkopts
+	-${CLINKER} -o $@ $(OBJ) ${PETSC_TS_LIB}
+
+# use this instead of clean
+allclean : 
+	rm -f ${EXNAME} $(OBJ) output.* out.m
+
+# Some tests (with hard-coded bash color codes)
+test : run_test1 run_test2
+
+TEST_OPTIONS=-ts_monitor -snes_monitor -ksp_monitor -ts_view
+
+run_test1: ${EXNAME}
+	@rm -f test1.tmp
+	@echo "\033[34mRunning Test 1\033[0m"
+	@${MPIEXEC} -n 1 ./${EXNAME} ${TEST_OPTIONS}  \
+    2>&1 > test1.tmp
+	@diff test1.tmp testref/test1.ref && \
+    echo "\033[32mSuccess\033[0m" || \
+    echo "\033[31mFailure: output does not match reference (see diff above)\033[0m"
+	@rm -f test1.tmp
+
+run_test2: ${EXNAME}
+	@rm -f test2.tmp
+	@echo "\033[34mRunning Test 2\033[0m"
+	@${MPIEXEC} -n 2 ./${EXNAME} ${TEST_OPTIONS}  \
+    2>&1 > test2.tmp
+	@diff test2.tmp testref/test2.ref && \
+    echo "\033[32mSuccess\033[0m" || \
+    echo "\033[31mFailure: output does not match reference (see diff above)\033[0m"
+	@rm -f test2.tmp
+
+.PHONY: ALL allclean test run_test1 run_test2
+
+include ${PETSC_DIR}/lib/petsc/conf/test
