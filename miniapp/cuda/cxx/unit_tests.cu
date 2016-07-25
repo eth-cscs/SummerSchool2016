@@ -33,7 +33,8 @@ bool test_scaled_diff() {
         l[i] = 7.0;
         r[i] = 2.0;
     }
-    y.update_device();
+    l.update_device();
+    r.update_device();
 
     linalg::ss_scaled_diff(y, 2.0, l, r);
     y.update_host();
