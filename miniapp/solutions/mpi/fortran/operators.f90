@@ -101,6 +101,7 @@ subroutine diffusion(u, s)
     endif
 
     ! the interior grid points
+    !$omp parallel do
     do j = 2, jend
         do i = 2, iend
             s(i,j) = -(4.+alpha) * u(i,j)           &   ! central point
@@ -110,6 +111,7 @@ subroutine diffusion(u, s)
                         + dxs*u(i,j)*(1.0_8 - u(i,j))
         end do
     end do
+    !$omp end parallel do
 
     ! wait on the receives
     call mpi_waitall(num_requests, requests, stats, err)

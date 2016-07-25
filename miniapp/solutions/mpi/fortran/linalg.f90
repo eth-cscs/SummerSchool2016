@@ -46,9 +46,11 @@ real (kind=8) function ss_dot(x, y, N)
 
     ! the logic
     acc = 0
+    !$omp parallel do reduction(+:acc)
     do i = 1, N
         acc = acc + x(i) * y(i)
     enddo
+    !$omp end parallel do
 
     call mpi_allreduce(acc, accglobal, 1, MPI_DOUBLE, MPI_SUM, domain%comm_cart, err)
     ss_dot = accglobal
@@ -72,9 +74,11 @@ real (kind=8) function ss_norm2(x, N)
 
     ! the logic
     acc = 0
+    !$omp parallel do reduction(+:acc)
     do i = 1, N
         acc = acc + x(i) * x(i)
     enddo
+    !$omp end parallel do
     call mpi_allreduce(acc, accglobal, 1, MPI_DOUBLE, MPI_SUM, domain%comm_cart, err)
     ss_norm2 = sqrt(accglobal)
 
@@ -96,9 +100,11 @@ subroutine ss_fill(x, value, N)
     integer :: i
 
     ! the logic
+    !$omp parallel do
     do i = 1, N
         x(i) = value
     enddo
+    !$omp end parallel do
 end
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -118,9 +124,11 @@ subroutine ss_axpy(y, alpha, x, N)
     integer :: i
 
     ! the logic
+    !$omp parallel do
     do i = 1, N
         y(i) = alpha*x(i) + y(i)
     enddo
+    !$omp end parallel do
 
     ! update the flops counter
     flops_blas1 = flops_blas1 + 2*N
@@ -141,9 +149,11 @@ subroutine ss_add_scaled_diff(y, x, alpha, l, r, N)
     ! local variables
     integer :: i
 
+    !$omp parallel do
     do i = 1, N
         y(i) = x(i) + alpha * (l(i) - r(i))
     enddo
+    !$omp end parallel do
 
     ! update the flops counter
     flops_blas1 = flops_blas1 + 3*N
@@ -163,9 +173,11 @@ subroutine ss_scaled_diff(y, alpha, l, r, N)
     ! local variables
     integer :: i
 
+    !$omp parallel do
     do i = 1, N
         y(i) = alpha * (l(i) - r(i))
     enddo
+    !$omp end parallel do
 
     ! update the flops counter
     flops_blas1 = flops_blas1 + 2*N
@@ -185,9 +197,11 @@ subroutine ss_scale(y, alpha, x, N)
     integer :: i
 
     ! the logic
+    !$omp parallel do
     do i = 1, N
         y(i) = alpha*x(i)
     enddo
+    !$omp end parallel do
 
     ! update the flops counter
     flops_blas1 = flops_blas1 + N
@@ -209,9 +223,11 @@ subroutine ss_lcomb(y, alpha, x, beta, z, N)
     integer :: i
 
     ! the logic
+    !$omp parallel do
     do i = 1, N
         y(i) = alpha*x(i) + beta*z(i)
     enddo
+    !$omp end parallel do
 
     ! update the flops counter
     flops_blas1 = flops_blas1 + 3*N
@@ -229,9 +245,11 @@ subroutine ss_copy(y, x, N)
     integer :: i
 
     ! the logic
+    !$omp parallel do
     do i = 1, N
         y(i) = x(i)
     enddo
+    !$omp end parallel do
 end
 
 ! conjugate gradient solver
