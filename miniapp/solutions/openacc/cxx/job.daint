@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name="summer-school-openacc"
+#SBATCH --nodes=1
+#SBATCH --output=job.out
+#SBATCH --reservation=summerschool
+#SBATCH --gres=gpu:1
+#SBATCH --time=00:15:00
+
+#srun ./main 128 128 10 0.001 yes
+#srun ./main 512 512 50 0.0025 no
+srun ./main 1024 1024 100 0.0025 no
