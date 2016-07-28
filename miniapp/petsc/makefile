@@ -1,6 +1,6 @@
 # Makefile for use with Piz Daint, a Cray XC system.
 #
-# Alse see makfile.local to use your own build of PETSc
+# Also see makfile.local to use your own build of PETSc
 #
 # Tested as of 2016.07.24
 #
