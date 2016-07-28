@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#SBATCH --job-name="petsc-miniapp-test"
+#SBATCH --nodes=1
+#SBATCH --output=job%j.out
+#SBATCH --reservation=summerschool
+#SBATCH --time=00:10:00
+
+srun ./main -ts_monitor -snes_monitor -ksp_monitor 
