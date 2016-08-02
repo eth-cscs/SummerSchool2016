@@ -67,6 +67,7 @@ PROGRAM ghost_cell_exchange
   !  c) MPI_Sendrecv
 
   !  to the left
+
   ! a)
 
   ! b)

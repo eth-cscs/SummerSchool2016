@@ -15,7 +15,7 @@ PROGRAM hello
 !                                                              !
 !==============================================================!
 
-  USE mpi
+  USE MPI
 
   IMPLICIT NONE
 

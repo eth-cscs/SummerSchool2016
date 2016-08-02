@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH --job-name="summer-school-serial"
+#SBATCH --nodes=4
+#SBATCH --output=job%j.out
+#SBATCH --reservation=summerschool
+#SBATCH --time=00:15:00
+
+dim=512
+tsteps=200
+
+OMP_NUM_THREADS=1 aprun -n 32 -d 1 ./main $dim $dim $tsteps 0.01
+OMP_NUM_THREADS=2 aprun -n 16 -d 2 ./main $dim $dim $tsteps 0.01
+OMP_NUM_THREADS=4 aprun -n  8 -d 4 ./main $dim $dim $tsteps 0.01
+
