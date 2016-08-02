@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#SBATCH --job-name="summerschool-mpi-g2g"
+#SBATCH --nodes=16
+#SBATCH --output=job%j.out
+#SBATCH --reservation=summerschool
+#SBATCH --time=00:10:00
+
+export MPICH_RDMA_ENABLED_CUDA=1
+for ranks in 1 2 4 8 16
+do
+    aprun -n$ranks -N$ranks  diffusion2d_mpi.cuda 16 1000 | grep '##'
+done
